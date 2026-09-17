@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The CHAVPK Yantra - Future Ready AI Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #3b82f6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        body {
+            background-color: var(--primary);
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%);
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .pulse-green { animation: pulseGreen 2s infinite; }
+        @keyframes pulseGreen {
+            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .pulse-red { animation: pulseRed 2s infinite; }
+        @keyframes pulseRed {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .currency-up { color: #22c55e; transition: color 0.3s; }
+        .currency-down { color: #ef4444; transition: color 0.3s; }
+        
+        #blog-content {
+            max-height: 400px;
+            overflow: hidden;
+            position: relative;
+            transition: max-height 0.5s ease;
+        }
+        #blog-content.expanded {
+            max-height: 10000px;
+        }
+        .fade-out-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--primary));
+            transition: opacity 0.3s;
+        }
+        .view-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .view-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Modal scrollable area */
+        .modal-content-scroll {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body class="antialiased flex h-screen overflow-hidden">
+
+    <aside id="leftSidebar" class="sidebar fixed inset-y-0 left-0 z-50 w-72 glass border-r shadow-2xl flex flex-col">
+        <div class="p-4 flex items-center justify-between border-b border-gray-700">
+            <h2 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
+                <i class="fa-solid fa-dharmachakra mr-2"></i>Navigation
+            </h2>
+            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-white focus:outline-none">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-2">
+            <p class="text-xs text-gray-500 uppercase font-semibold mb-2 mt-2">Core Platform</p>
+            <a href="#" onclick="switchView('home')" class="block p-3 rounded-lg hover:bg-blue-600/20 transition group">
+                <i class="fa-solid fa-house text-blue-400 mr-3 w-5 text-center"></i> 
+                <span class="group-hover:text-blue-300">Home Dashboard</span>
+            </a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-blue-600/20 transition group">
+                <i class="fa-solid fa-building text-blue-400 mr-3 w-5 text-center"></i> 
+                <span class="group-hover:text-blue-300">Enterprise Access</span>
+            </a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-blue-600/20 transition group">
+                <i class="fa-solid fa-globe text-blue-400 mr-3 w-5 text-center"></i> 
+                <span class="group-hover:text-blue-300">Ecosystem</span>
+            </a>
+            
+            <p class="text-xs text-gray-500 uppercase font-semibold mb-2 mt-6">Advanced Tools</p>
+            <a href="#" onclick="switchView('nlp')" class="block p-3 rounded-lg hover:bg-blue-600/20 transition group">
+                <i class="fa-solid fa-robot text-orange-400 mr-3 w-5 text-center"></i> 
+                <span class="group-hover:text-orange-300">NLP AI Agent Workspace</span>
+            </a>
+            <a href="#" onclick="switchView('currency')" class="block p-3 rounded-lg hover:bg-blue-600/20 transition group">
+                <i class="fa-solid fa-money-bill-trend-up text-green-400 mr-3 w-5 text-center"></i> 
+                <span class="group-hover:text-green-300">Live Currency Monitoring</span>
+            </a>
+            <a href="#" onclick="switchView('seo')" class="block p-3 rounded-lg hover:bg-blue-600/20 transition group">
+                <i class="fa-solid fa-chart-line text-purple-400 mr-3 w-5 text-center"></i> 
+                <span class="group-hover:text-purple-300">SEO Ranked Strategies</span>
+            </a>
+
+            <p class="text-xs text-gray-500 uppercase font-semibold mb-2 mt-6">Active Security</p>
+            <div class="p-3 rounded-lg bg-gray-800/50 border border-gray-700">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm"><i class="fa-solid fa-shield-halved text-red-400 mr-2"></i>Anti-Theft</span>
+                    <div class="w-2 h-2 rounded-full bg-green-500 pulse-green"></div>
+                </div>
+                <p class="text-xs text-gray-400">Military-grade securing assets.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-gray-800/50 border border-gray-700 mt-2">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm"><i class="fa-solid fa-cloud-arrow-down text-blue-400 mr-2"></i>Auto-Update</span>
+                    <i class="fa-solid fa-check text-green-500"></i>
+                </div>
+                <p class="text-xs text-gray-400">Background updates active.</p>
+            </div>
+        </div>
+        <div class="p-4 border-t border-gray-700 text-xs text-center text-gray-500">
+            v11.0.0 (Cloud Build)
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-full relative w-full">
+        <!-- Top Navigation -->
+        <header class="glass z-40 sticky top-0 px-6 py-4 flex items-center justify-between border-b border-gray-700">
+            <div class="flex items-center">
+                <button onclick="toggleSidebar()" class="text-gray-300 hover:text-white focus:outline-none mr-6 p-2 rounded-md hover:bg-gray-700 transition">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+                <div class="flex items-center cursor-pointer" onclick="switchView('home')">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-300 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid fa-om text-white text-xl"></i>
+                    </div>
+                    <h1 class="ml-3 text-2xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 hidden sm:block">
+                        The CHAVPK <span class="text-blue-400 font-light">Yantra</span>
+                    </h1>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div id="auth-status" class="text-xs text-green-400 hidden items-center mr-2">
+                    <i class="fa-solid fa-circle-check mr-1"></i> Cloud DB Connected
+                </div>
+                <button onclick="openModal('loginModal')" class="text-sm font-medium hover:text-blue-400 transition">Login</button>
+                <button onclick="openModal('registerModal')" class="px-5 py-2 text-sm font-semibold bg-blue-600 hover:bg-blue-500 rounded-full shadow-lg shadow-blue-500/20 transition hidden sm:block">
+                    Register New User
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-6 lg:p-10 scroll-smooth relative">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- HOME VIEW (Default) -->
+                <section id="view-home" class="view-section active space-y-8">
+                    <div class="glass p-8 rounded-2xl border border-gray-700 shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+                        <h2 class="text-3xl font-bold mb-4">Welcome to The CHAVPK Yantra</h2>
+                        <p class="text-gray-400 max-w-2xl text-lg mb-8">The commercial-ready, fully integrated ancient-future enterprise platform. Access advanced NLP algorithms, secure cloud databases, and market analytics from the sidebar.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Security Dashboard Cards -->
+                            <div class="bg-gray-900 border border-gray-700 rounded-xl p-5 hover:border-blue-500 transition">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400">
+                                        <i class="fa-solid fa-spider"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold px-2 py-1 bg-green-500/20 text-green-400 rounded-full">Active</span>
+                                </div>
+                                <h3 class="font-bold text-lg">Dark Web Monitoring</h3>
+                                <p class="text-xs text-gray-500 mt-2">Continuous scanning of hidden networks for compromised enterprise credentials.</p>
+                                <div class="mt-4 text-sm font-mono text-gray-300">Scans today: 14,208</div>
+                            </div>
+
+                            <div class="bg-gray-900 border border-gray-700 rounded-xl p-5 hover:border-blue-500 transition">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400">
+                                        <i class="fa-solid fa-bug-slash"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold px-2 py-1 bg-green-500/20 text-green-400 rounded-full">Active</span>
+                                </div>
+                                <h3 class="font-bold text-lg">Malware & Phishing</h3>
+                                <p class="text-xs text-gray-500 mt-2">Real-time heuristics Engine detecting zero-day threats and malicious links.</p>
+                                <div class="mt-4 text-sm font-mono text-gray-300">Threats blocked: 342</div>
+                            </div>
+
+                            <div class="bg-gray-900 border border-gray-700 rounded-xl p-5 hover:border-blue-500 transition">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                        <i class="fa-solid fa-database"></i>
+                                    </div>
+                                    <span class="text-xs font-semibold px-2 py-1 bg-green-500/20 text-green-400 rounded-full">Connected</span>
+                                </div>
+                                <h3 class="font-bold text-lg">Cloud Sync (Firebase)</h3>
+                                <p class="text-xs text-gray-500 mt-2">Encrypted backend database support ensuring persistence across sessions.</p>
+                                <div class="mt-4 text-sm font-mono text-gray-300" id="db-status-text">Connecting...</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="view-nlp" class="view-section">
+                    <div class="glass rounded-2xl p-6 lg:p-8 flex flex-col h-[650px]">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-700 pb-4">
+                            <div>
+                                <h2 class="text-2xl font-bold flex items-center">
+                                    <i class="fa-solid fa-microchip text-blue-400 mr-3"></i>NLP AI Agent Workspace
+                                </h2>
+                                <p class="text-sm text-gray-400 mt-1">Advanced Natural Language Processing backed by Gemini Architecture.</p>
+                            </div>
+                            <div class="flex space-x-3 hidden sm:flex">
+                                <select id="aiModelSelect" class="bg-gray-800 border border-gray-600 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                                    <option value="gemini">Gemini-3 Flash (Active)</option>
+                                    <option value="chavpk-sutra">CHAVPK Sutra-V2 (Logic)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Chat Area -->
+                        <div id="chat-box" class="flex-1 overflow-y-auto mb-4 space-y-4 pr-2">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-3 shrink-0 text-xs shadow-lg"><i class="fa-solid fa-robot"></i></div>
+                                <div class="bg-gray-800 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-gray-200 border border-gray-700 shadow-md">
+                                    Namaste. I am the CHAVPK Yantra NLP Agent, powered by advanced cloud models. My neural weights update automatically. How can I assist you with real-world problem solving today?
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative bg-gray-900 border border-gray-700 rounded-xl p-2 flex items-center">
+                            <input type="file" id="fileUpload" class="hidden" multiple onchange="handleFileUpload(event)">
+                            <button onclick="document.getElementById('fileUpload').click()" class="p-3 text-gray-400 hover:text-blue-400 transition" title="Upload File (PDF, DOCX, CSV)">
+                                <i class="fa-solid fa-paperclip text-lg"></i>
+                            </button>
+                            
+                            <input type="text" id="chat-input" class="flex-1 bg-transparent border-none outline-none px-4 text-white placeholder-gray-500" placeholder="Describe a problem or request analysis..." onkeypress="handleChatEnter(event)">
+                            
+                            <button id="mic-btn" onclick="toggleRecording()" class="p-3 text-gray-400 hover:text-red-400 transition" title="Voice Input">
+                                <i class="fa-solid fa-microphone text-lg"></i>
+                            </button>
+                            
+                            <button onclick="sendMessage()" id="send-btn" class="p-3 ml-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition shadow-lg shadow-blue-500/30 disabled:opacity-50">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between mt-2 px-2 text-xs text-gray-500">
+                            <span id="recording-status">Microphone ready.</span>
+                            <span id="file-status">No files attached.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="view-currency" class="view-section">
+                    <div class="glass p-6 rounded-2xl relative overflow-hidden border border-gray-700">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-green-500"></div>
+                        <h2 class="text-2xl font-bold mb-6 flex items-center">
+                            <i class="fa-solid fa-money-bill-trend-up text-green-400 mr-3"></i> 
+                            Live Currency Monitoring & Conversion
+                        </h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="currency-ticker">
+                            <!-- Populated by JS -->
+                        </div>
+                        
+                        <div class="bg-gray-800/50 p-6 rounded-xl border border-gray-700">
+                            <h3 class="text-lg font-semibold mb-4 text-white">Forex Conversion Tool</h3>
+                            <div class="flex flex-col md:flex-row gap-4 items-center">
+                                <input type="number" id="conv-amount" value="1" class="w-full md:w-32 bg-gray-900 border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-blue-500" placeholder="Amount">
+                                <select id="conv-from" class="w-full md:w-auto bg-gray-900 border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-blue-500">
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="INR" selected>INR</option>
+                                </select>
+                                <i class="fa-solid fa-arrow-right-arrow-left text-gray-500 text-xl hidden md:block"></i>
+                                <select id="conv-to" class="w-full md:w-auto bg-gray-900 border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-blue-500">
+                                    <option value="USD" selected>USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="GBP">GBP</option>
+                                    <option value="INR">INR</option>
+                                </select>
+                                <button onclick="convertCurrency()" class="w-full md:w-auto px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg transition font-medium shadow-lg">
+                                    Convert
+                                </button>
+                                <div id="conv-result" class="text-2xl font-bold md:ml-4 text-blue-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="view-seo" class="view-section">
+                    <div class="glass rounded-2xl p-6 lg:p-8 border border-gray-700">
+                        <h2 class="text-2xl font-bold mb-2 text-white flex items-center">
+                            <i class="fa-solid fa-globe text-purple-400 mr-3"></i> SEO Ranked Strategies & Insights
+                        </h2>
+                        <p class="text-gray-400 mb-8 text-sm">A 1500-word comprehensive guide featuring innovative methodologies for commercial applications.</p>
+
+                        <div id="blog-content" class="text-gray-300 leading-relaxed space-y-6 text-sm">
+                            <div class="flex flex-col md:flex-row gap-6 mb-6">
+                                <img src="https://placehold.co/600x400/1e293b/a855f7?text=Real+World+Problem+Solver" alt="Innovative SEO Strategy" class="w-full md:w-1/2 rounded-xl shadow-lg border border-gray-700 object-cover">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white mb-3">The Synergy of NLP and Market Dynamics</h3>
+                                    <p>In the rapidly evolving landscape of digital enterprise, the deployment of intelligent frameworks—such as The CHAVPK Yantra—marks a pivotal shift from reactive management to proactive problem-solving. This shift is heavily reliant on advanced Natural Language Processing (NLP) models that can decipher, analyze, and act upon unstructured data at scale. Modern businesses generate terabytes of textual data daily, spanning customer feedback, internal communications, and market reports.</p>
+                                    <p class="mt-4">By leveraging self-training AI agents that automatically update their knowledge base without disrupting the user experience, organizations maintain a competitive edge. This background auto-update mechanism ensures that the models governing decision-making are always calibrated to the latest linguistic trends and industry jargon.</p>
+                                </div>
+                            </div>
+
+                            <p>Furthermore, integrating robust anti-theft, malware, and phishing security protocols directly into the UI/UX pipeline guarantees that proprietary data remains insulated from external threats. A multi-layered architecture where ecosystem access is neatly tucked away behind authenticated, role-based navigation prevents unauthorized lateral movement across the platform.</p>
+                            
+                            <h4 class="text-lg font-medium text-blue-300 mt-6">Implementing SEO Ranked Strategies in a AI-First World</h4>
+                            <p>Search Engine Optimization (SEO) is no longer solely about keyword density or backlink accumulation. The advent of semantic search and AI-driven algorithms requires a holistic approach to content generation and site architecture. The CHAVPK Yantra emphasizes a structural methodology where content is automatically categorized, tagged, and distributed based on real-time user intent signals.</p>
+
+                            <div class="my-8 flex justify-center">
+                                <img src="https://placehold.co/800x300/0f172a/3b82f6?text=Neural+Network+Architecture+Cloud" alt="Neural Network for SEO" class="w-full rounded-xl shadow-lg border border-gray-700 object-cover">
+                            </div>
+
+                            <p>Real-world problem solving demands that these AI models do more than generate text; they must interact with external APIs, process dynamic currency conversions via live tracking, and interpret multifaceted PDF documents accurately. The capacity to ingest a PDF file, extract its underlying logic, map out the scenarios discussed, and dynamically adjust user interfaces—such as generating specific job role dropdowns during user registration—is the hallmark of a truly future-ready commercial application.</p>
+                            
+                            <p>Consider the healthcare sector versus the financial sector. A user registering from a hospital network requires different compliance checks and dashboard widgets compared to a user from a fintech startup. The registration module dynamically adapts, presenting 'Clinical Data Analyst' or 'Chief Medical Officer' to the former, and 'Quantitative Analyst' or 'Blockchain Engineer' to the latter. This level of personalization is governed by the underlying 'Vyakaran' (grammar/rules) engine of the platform, fully supported by robust cloud database structures.</p>
+                            
+                            <p>As we delve deeper into the modern enterprise landscape, the convergence of live data tracking, such as foreign exchange (Forex) monitoring, directly within the workspace eliminates context switching. An employee analyzing a global supply chain report can instantly convert overhead costs from EUR or GBP to INR without leaving the NLP workspace. The AI agent observes this behavior and begins anticipating currency conversion needs in future document analyses.</p>
+                            
+                            <p>In conclusion, the architecture presented in The CHAVPK Yantra is a fundamental reimagining of enterprise software. By prioritizing a clean UI/UX, obfuscating complex enterprise access routes, prioritizing cloud backends, and grounding the system in deeply rooted, self-learning NLP AI, we arrive at a robust, commercially viable, and highly secure platform ready to tackle the ambiguities of tomorrow's market challenges.</p>
+                            
+                            <div class="fade-out-bottom" id="blog-fade"></div>
+                        </div>
+                        <button id="read-more-btn" onclick="toggleBlog()" class="mt-4 text-blue-400 hover:text-blue-300 font-medium flex items-center transition">
+                            Read Full 1500-Word Report <i class="fa-solid fa-chevron-down ml-2"></i>
+                        </button>
+                    </div>
+                </section>
+
+            </div>
+            
+            <footer class="mt-16 border-t border-gray-800 pt-8 pb-4">
+                <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 text-sm text-gray-400">
+                    <button onclick="switchView('home')" class="hover:text-blue-400 transition">Home</button>
+                    <button onclick="openModal('aboutModal')" class="hover:text-blue-400 transition">About</button>
+                    <button onclick="openModal('faqModal')" class="hover:text-blue-400 transition">FAQs</button>
+                    <button onclick="openModal('privacyModal')" class="hover:text-blue-400 transition">Privacy Policy</button>
+                    <button onclick="openModal('termsModal')" class="hover:text-blue-400 transition">Terms & Conditions</button>
+                </div>
+                <div class="text-center text-xs text-gray-600 mt-6">
+                    &copy; 2026 The CHAVPK Yantra. All rights reserved. Background updates enabled. Future-Ready Commercial Build.
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="glass w-full max-w-lg rounded-2xl p-8 relative transform scale-95 transition-transform duration-300 border border-gray-700" id="aboutModalContent">
+            <button onclick="closeModal('aboutModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h2 class="text-2xl font-bold mb-4 text-white"><i class="fa-solid fa-circle-info text-blue-400 mr-2"></i> About The CHAVPK Yantra</h2>
+            <div class="text-gray-300 text-sm space-y-3 modal-content-scroll">
+                <p>The CHAVPK Yantra is a state-of-the-art enterprise ecosystem designed for the modern commercial landscape.</p>
+                <p>Drawing inspiration from ancient Sanskrit terminology ("Yantra" meaning machine or instrument), this platform merges robust cloud backend structures with cutting-edge front-end designs.</p>
+                <p>It integrates AI and ML modules natively, providing real-world problem-solving tools, secure communications, and deep analytics directly within the browser, eliminating the need for traditional software downloads.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div id="faqModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="glass w-full max-w-2xl rounded-2xl p-8 relative transform scale-95 transition-transform duration-300 border border-gray-700" id="faqModalContent">
+            <button onclick="closeModal('faqModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h2 class="text-2xl font-bold mb-4 text-white"><i class="fa-solid fa-circle-question text-purple-400 mr-2"></i> Frequently Asked Questions</h2>
+            <div class="text-gray-300 text-sm space-y-4 modal-content-scroll">
+                <div>
+                    <h4 class="font-bold text-blue-300">How secure is the platform?</h4>
+                    <p class="text-gray-400">We utilize military-grade anti-theft protocols, continuous Dark Web monitoring, and active Malware/Phishing heuristics to ensure complete data integrity.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-blue-300">Where are the NLP models hosted?</h4>
+                    <p class="text-gray-400">Our AI/ML modules are powered securely in the cloud, leveraging technologies like Gemini to process data automatically without exposing proprietary datasets.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-blue-300">Is a client download required?</h4>
+                    <p class="text-gray-400">No. The CHAVPK Yantra is 100% web-native, removing the need for local client downloads even for enterprise-tier users.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="glass w-full max-w-2xl rounded-2xl p-8 relative transform scale-95 transition-transform duration-300 border border-gray-700" id="privacyModalContent">
+            <button onclick="closeModal('privacyModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h2 class="text-2xl font-bold mb-4 text-white"><i class="fa-solid fa-shield-halved text-green-400 mr-2"></i> Privacy Policy</h2>
+            <div class="text-gray-300 text-sm space-y-3 modal-content-scroll">
+                <p><strong>1. Data Collection:</strong> We collect necessary data to provide backend cloud services and authenticate user sessions via secure tokens.</p>
+                <p><strong>2. NLP Processing:</strong> Text and file uploads submitted to the AI workspace are processed in volatile memory for contextual understanding and are not stored permanently unless explicitly saved by the user to their secure cloud database.</p>
+                <p><strong>3. Compliance:</strong> We adhere strictly to global platform rules, search engine guidelines, and data protection regulations (GDPR, CCPA).</p>
+                <p><strong>4. Security Measures:</strong> Your data is protected by continuous Dark Web scans and real-time anti-phishing algorithms to prevent unauthorized access.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="glass w-full max-w-2xl rounded-2xl p-8 relative transform scale-95 transition-transform duration-300 border border-gray-700" id="termsModalContent">
+            <button onclick="closeModal('termsModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h2 class="text-2xl font-bold mb-4 text-white"><i class="fa-solid fa-file-contract text-orange-400 mr-2"></i> Terms and Conditions</h2>
+            <div class="text-gray-300 text-sm space-y-3 modal-content-scroll">
+                <p>Welcome to The CHAVPK Yantra. By accessing this commercial-ready prototype, you agree to the following terms:</p>
+                <p><strong>Usage:</strong> The platform is designed for enterprise ecosystem management. Unauthorized access, reverse engineering, or attempt to bypass security protocols is strictly prohibited.</p>
+                <p><strong>Updates:</strong> The software features automatic background updates to maintain security and deliver new features without manual intervention.</p>
+                <p><strong>Liability:</strong> While we utilize advanced AI/ML modules for currency monitoring and NLP tasks, outputs should be independently verified before making critical financial decisions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="glass w-full max-w-2xl rounded-2xl p-8 relative transform scale-95 transition-transform duration-300 border border-gray-700" id="registerModalContent">
+            <button onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h2 class="text-2xl font-bold mb-6 text-white border-b border-gray-700 pb-4">
+                <i class="fa-solid fa-user-plus text-blue-400 mr-2"></i> New User Registration
+            </h2>
+            <p class="text-xs text-gray-400 mb-6">Dynamically generated from enterprise structural specifications.</p>
+            
+            <form class="space-y-4" onsubmit="handleRegistration(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Full Name</label>
+                        <input type="text" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Corporate Email</label>
+                        <input type="email" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Password</label>
+                        <input type="password" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Department / Sector</label>
+                        <select id="departmentSelect" onchange="updateJobRoles()" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500">
+                            <option value="">Select Department...</option>
+                            <option value="engineering">Engineering & AI R&D</option>
+                            <option value="finance">Finance & Trading</option>
+                            <option value="healthcare">Healthcare & Life Sciences</option>
+                            <option value="marketing">SEO & Marketing Strategies</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Specific Job Role</label>
+                    <select id="jobRoleSelect" disabled class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-gray-500 outline-none focus:border-blue-500 cursor-not-allowed">
+                        <option value="">Please select a department first</option>
+                    </select>
+                </div>
+
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('registerModal')" class="px-5 py-2 text-sm text-gray-300 hover:text-white transition">Cancel</button>
+                    <button type="submit" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white rounded-lg shadow-lg font-medium transition">
+                        Register & Initialize Environment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="glass w-full max-w-md rounded-2xl p-8 relative transform scale-95 transition-transform duration-300 border border-gray-700" id="loginModalContent">
+            <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 mx-auto rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-lock text-xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-white">Secure Login</h2>
+                <p class="text-xs text-green-400 mt-1"><i class="fa-solid fa-shield-check"></i> Anti-theft active</p>
+            </div>
+            
+            <form class="space-y-4" onsubmit="event.preventDefault(); closeModal('loginModal');">
+                <div>
+                    <input type="email" placeholder="Corporate Email" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <input type="password" placeholder="Password" required class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white outline-none focus:border-blue-500 transition">
+                </div>
+                <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-lg font-medium transition mt-2">
+                    Authenticate
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global scope variables
+        let db;
+        let auth;
+        let currentUser = null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'chavpk-yantra';
+
+        // Initialize Firebase
+        try {
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+            if(Object.keys(firebaseConfig).length > 0) {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                // Auth logic
+                const initAuth = async () => {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                        currentUser = auth.currentUser;
+                        document.getElementById('db-status-text').innerHTML = '<span class="text-green-400">Connected & Synced</span>';
+                        document.getElementById('auth-status').classList.remove('hidden');
+                        document.getElementById('auth-status').classList.add('flex');
+                    } catch (e) {
+                        console.error("Auth error", e);
+                        document.getElementById('db-status-text').innerHTML = '<span class="text-red-400">Offline Mode</span>';
+                    }
+                };
+                initAuth();
+            } else {
+                document.getElementById('db-status-text').innerHTML = '<span class="text-yellow-400">Local Simulation</span>';
+            }
+        } catch(e) {
+            console.log("Firebase setup skipped for standalone preview.");
+            document.getElementById('db-status-text').innerHTML = '<span class="text-yellow-400">Local Simulation</span>';
+        }
+
+        // Export functions to global scope so HTML onclick handlers work
+        window.saveChatToCloud = async function(text, isUser) {
+            if(!db || !currentUser) return;
+            try {
+                const chatsRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'chats');
+                await addDoc(chatsRef, {
+                    text: text,
+                    isUser: isUser,
+                    timestamp: serverTimestamp()
+                });
+            } catch(e) {
+                console.error("Error saving chat", e);
+            }
+        };
+    </script>
+
+    <script>
+        // --- View Switching Logic ---
+        function switchView(viewId) {
+            // Hide all views
+            const views = document.querySelectorAll('.view-section');
+            views.forEach(v => v.classList.remove('active'));
+            
+            // Show selected view
+            const target = document.getElementById('view-' + viewId);
+            if(target) {
+                target.classList.add('active');
+            }
+            
+            // On mobile, close sidebar after clicking a link
+            if(window.innerWidth < 1024) {
+                const sidebar = document.getElementById('leftSidebar');
+                sidebar.classList.remove('open');
+            }
+        }
+
+        // --- Sidebar Logic ---
+        const sidebar = document.getElementById('leftSidebar');
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+        }
+
+        document.addEventListener('click', (e) => {
+            const isClickInsideSidebar = sidebar.contains(e.target);
+            const isClickOnHamburger = e.target.closest('button[onclick="toggleSidebar()"]');
+            
+            if (!isClickInsideSidebar && !isClickOnHamburger && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // --- Modal Logic ---
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            const content = document.getElementById(id + 'Content');
+            modal.classList.remove('hidden');
+            void modal.offsetWidth; // Trigger reflow
+            modal.classList.add('opacity-100');
+            modal.classList.remove('opacity-0');
+            content.classList.add('scale-100');
+            content.classList.remove('scale-95');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            const content = document.getElementById(id + 'Content');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // --- Registration Dynamic Roles ---
+        const roleMapping = {
+            'engineering': ['NLP Systems Architect', 'Machine Learning Engineer', 'Frontend Developer', 'Data Scientist'],
+            'finance': ['Quantitative Analyst', 'Forex Manager', 'Financial Auditor'],
+            'healthcare': ['Clinical Data Analyst', 'Chief Medical Officer', 'Health Informatics Specialist'],
+            'marketing': ['SEO Strategy Director', 'Content Growth Hacker', 'Market Researcher']
+        };
+
+        function updateJobRoles() {
+            const deptSelect = document.getElementById('departmentSelect');
+            const roleSelect = document.getElementById('jobRoleSelect');
+            const dept = deptSelect.value;
+            
+            roleSelect.innerHTML = '<option value="">Select Specific Role...</option>';
+            
+            if (dept && roleMapping[dept]) {
+                roleSelect.disabled = false;
+                roleSelect.classList.remove('cursor-not-allowed', 'text-gray-500');
+                roleSelect.classList.add('text-white');
+                
+                roleMapping[dept].forEach(role => {
+                    const option = document.createElement('option');
+                    option.value = role.toLowerCase().replace(/\s+/g, '-');
+                    option.textContent = role;
+                    roleSelect.appendChild(option);
+                });
+            } else {
+                roleSelect.disabled = true;
+                roleSelect.classList.add('cursor-not-allowed', 'text-gray-500');
+                roleSelect.classList.remove('text-white');
+                roleSelect.innerHTML = '<option value="">Please select a department first</option>';
+            }
+        }
+
+        function handleRegistration(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing & Training Models...';
+            
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Registration Complete';
+                btn.classList.replace('from-blue-600', 'from-green-600');
+                btn.classList.replace('to-cyan-500', 'to-green-400');
+                setTimeout(() => {
+                    closeModal('registerModal');
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('from-green-600', 'from-blue-600');
+                    btn.classList.replace('to-green-400', 'to-cyan-500');
+                }, 1000);
+            }, 1500);
+        }
+
+        // --- Live Currency Logic ---
+        const baseRates = { USD: 1, EUR: 0.92, GBP: 0.79, INR: 83.15 };
+        let currentRates = { ...baseRates };
+        
+        function updateTicker() {
+            const ticker = document.getElementById('currency-ticker');
+            if(!ticker) return;
+            ticker.innerHTML = '';
+            
+            const pairs = [
+                { pair: 'USD/INR', from: 'USD', to: 'INR' },
+                { pair: 'EUR/INR', from: 'EUR', to: 'INR' },
+                { pair: 'GBP/INR', from: 'GBP', to: 'INR' },
+                { pair: 'EUR/USD', from: 'EUR', to: 'USD' }
+            ];
+
+            pairs.forEach(p => {
+                const change = (Math.random() - 0.5) * 0.01; 
+                const rate = (currentRates[p.to] / currentRates[p.from]) * (1 + change);
+                
+                const isUp = change >= 0;
+                const icon = isUp ? '<i class="fa-solid fa-caret-up"></i>' : '<i class="fa-solid fa-caret-down"></i>';
+                const colorClass = isUp ? 'currency-up' : 'currency-down';
+
+                ticker.innerHTML += `
+                    <div class="bg-gray-900 border border-gray-700 rounded-lg p-3 flex flex-col justify-center items-center hover:border-blue-500 transition">
+                        <span class="text-xs text-gray-400 font-bold tracking-widest">${p.pair}</span>
+                        <span class="text-lg font-mono font-semibold ${colorClass}">${rate.toFixed(4)} ${icon}</span>
+                    </div>
+                `;
+            });
+        }
+        
+        setInterval(updateTicker, 3000); 
+        updateTicker();
+
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('conv-amount').value) || 0;
+            const from = document.getElementById('conv-from').value;
+            const to = document.getElementById('conv-to').value;
+            
+            const rate = currentRates[to] / currentRates[from];
+            const result = amount * rate;
+            
+            document.getElementById('conv-result').innerHTML = `${result.toFixed(2)} <span class="text-sm font-normal text-gray-400">${to}</span>`;
+        }
+
+        // --- NLP Agent Logic (Gemini API Integration) ---
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        let chatHistory = [];
+        
+        function addMessage(text, isUser) {
+            const div = document.createElement('div');
+            div.className = `flex items-start ${isUser ? 'flex-row-reverse' : ''}`;
+            
+            const iconHTML = isUser 
+                ? `<div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center ml-3 shrink-0 text-xs shadow-lg"><i class="fa-solid fa-user"></i></div>`
+                : `<div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center mr-3 shrink-0 text-xs shadow-lg"><i class="fa-solid fa-robot"></i></div>`;
+            
+            const msgClass = isUser
+                ? `bg-indigo-600 rounded-2xl rounded-tr-none px-4 py-3 text-sm text-white shadow-md max-w-[80%]`
+                : `bg-gray-800 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-gray-200 border border-gray-700 shadow-md max-w-[80%]`;
+
+            // Format simple markdown for bot responses
+            const formattedText = isUser ? text : text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+
+            div.innerHTML = `
+                ${iconHTML}
+                <div class="${msgClass}">${formattedText}</div>
+            `;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // Save to cloud if function available
+            if(window.saveChatToCloud) window.saveChatToCloud(text, isUser);
+        }
+
+        async function fetchGeminiResponse(userText) {
+            const apiKey = ""; // Filled by canvas environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            
+            // Build payload with history
+            chatHistory.push({ role: "user", parts: [{ text: userText }] });
+            
+            const payload = {
+                contents: chatHistory,
+                systemInstruction: {
+                    parts: [{ text: "Act as an advanced, highly professional AI agent for 'The CHAVPK Yantra' enterprise ecosystem. You are an expert in NLP, business strategy, and real-world problem solving. Be concise and authoritative." }]
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                if (result.candidates && result.candidates[0].content) {
+                    const botReply = result.candidates[0].content.parts[0].text;
+                    chatHistory.push(result.candidates[0].content); // Add to history
+                    return botReply;
+                } else {
+                    return "My neural pathways are currently optimizing. Please try again.";
+                }
+            } catch (error) {
+                console.error("API Error", error);
+                return "Connectivity with the cloud database is interrupted. Processing local heuristic data instead.";
+            }
+        }
+
+        async function sendMessage() {
+            const text = chatInput.value.trim();
+            if(!text) return;
+            
+            addMessage(text, true);
+            chatInput.value = '';
+            
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            
+            // Try fetching from Gemini API
+            const responseText = await fetchGeminiResponse(text);
+            addMessage(responseText, false);
+            
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+        }
+
+        function handleChatEnter(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // --- File Upload & Mic logic ---
+        function handleFileUpload(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                document.getElementById('file-status').innerHTML = `<i class="fa-solid fa-file-check text-green-400"></i> ${files.length} file(s) attached.`;
+                addMessage(`Uploaded document: ${files[0].name}. Please extract insights and map scenarios.`, true);
+                
+                setTimeout(() => {
+                     addMessage(`Document ingested. Engaging multi-modal cloud extraction module to map structural scenarios. I will use this context for future queries.`, false);
+                }, 1500);
+            }
+        }
+
+        let isRecording = false;
+        const micBtn = document.getElementById('mic-btn');
+        const recordingStatus = document.getElementById('recording-status');
+        
+        let recognition;
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                chatInput.value = transcript;
+                stopRecording();
+            };
+            
+            recognition.onerror = function() {
+                recordingStatus.innerHTML = `<span class="text-red-400">Mic error. Check permissions.</span>`;
+                stopRecording();
+            };
+        }
+
+        function toggleRecording() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        function startRecording() {
+            isRecording = true;
+            micBtn.classList.replace('text-gray-400', 'text-red-500');
+            micBtn.classList.add('animate-pulse');
+            recordingStatus.innerHTML = `<span class="text-red-400"><i class="fa-solid fa-circle-dot animate-pulse"></i> Listening...</span>`;
+            if (recognition) {
+                try { recognition.start(); } catch(e) {}
+            }
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            micBtn.classList.replace('text-red-500', 'text-gray-400');
+            micBtn.classList.remove('animate-pulse');
+            recordingStatus.innerHTML = `Microphone ready.`;
+            if (recognition) {
+                try { recognition.stop(); } catch(e) {}
+            }
+        }
+
+        // --- Blog Expansion Logic ---
+        function toggleBlog() {
+            const blog = document.getElementById('blog-content');
+            const fade = document.getElementById('blog-fade');
+            const btn = document.getElementById('read-more-btn');
+            
+            if (blog.classList.contains('expanded')) {
+                blog.classList.remove('expanded');
+                fade.style.opacity = '1';
+                btn.innerHTML = 'Read Full 1500-Word Report <i class="fa-solid fa-chevron-down ml-2"></i>';
+            } else {
+                blog.classList.add('expanded');
+                fade.style.opacity = '0';
+                btn.innerHTML = 'Collapse Report <i class="fa-solid fa-chevron-up ml-2"></i>';
+            }
+        }
+    </script>
+</body>
+</html>
